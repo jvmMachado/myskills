@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   View,
@@ -11,6 +11,14 @@ import {
 } from 'react-native';
 
 export function Home() {
+  const [newSkill, setNewSkill] = useState('');
+  const [mySkills, setMySkills] = useState([]);
+
+  function handleAddSkill() {
+    setMySkills(oldSkills => [...oldSkills, newSkill]);
+    setNewSkill('');
+  }
+
   return (
     <View style={styles.container}>
       <Text
@@ -23,18 +31,28 @@ export function Home() {
         style={styles.input}
         placeholder="New Skill"
         placeholderTextColor="#555"
+        onChangeText={setNewSkill}
       />
 
       <TouchableOpacity
         style={styles.button}
         activeOpacity={0.7}
+        onPress={handleAddSkill}
       >
         <Text style={styles.buttonText}>Add</Text>
       </TouchableOpacity>
 
-      <Text style={[styles.title, {marginTop: 50}]}>
+      <Text style={[styles.title, {marginVertical: 50}]}>
         My Skills
       </Text>
+
+      {mySkills.map(skill => (
+        <TouchableOpacity style={styles.skillButton}>
+          <Text key={skill} style={styles.skillText}>
+            {skill}
+          </Text>
+        </TouchableOpacity>
+      ))}
 
     </View>
   );
@@ -72,4 +90,16 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
   },
+  skillButton: {
+    backgroundColor: '#1f1e25',
+    borderRadius: 50,
+    alignItems: 'center',
+    padding: 15,
+    marginBottom: 30,
+  },
+  skillText: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: 'bold',
+  }
 });
