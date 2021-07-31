@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   View,
@@ -16,18 +16,34 @@ import { SkillCard } from '../components/SkillCard';
 export function Home() {
   const [newSkill, setNewSkill] = useState('');
   const [mySkills, setMySkills] = useState([]);
+  const [greeting, setGreeting] = useState('');
 
   function handleAddSkill() {
     setMySkills(oldSkills => [...oldSkills, newSkill]);
     setNewSkill('');
   }
 
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+
+    if (currentHour < 12) {
+      setGreeting('Good morning!');
+    } else if (currentHour >= 12 && currentHour < 18) {
+      setGreeting('Good afternoon!');
+    } else {
+      setGreeting('Good evening!');
+    }
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text
         style={styles.title}
       >
-        React Native
+        Welcome, John
+      </Text>
+      <Text style={styles.greeting}>
+        {greeting}
       </Text>
 
       <TextInput
@@ -76,5 +92,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderRadius: 7,
   },
+  greeting: {
+    color: '#fff',
+  }
   
 });
